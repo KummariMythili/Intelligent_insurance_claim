@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Claim Prediction</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 500px;
+            margin: auto;
+            margin-top: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        h2 {
+            text-align: center;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="/predict" method="post">
+        <h2>Intelligent Insurance Claim Prediction</h2>
+
+        <label>Age:</label>
+        <input type="number" name="age" required>
+
+        <label>Gender:</label>
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label>BMI:</label>
+        <input type="number" name="bmi" step="0.1" required>
+
+        <label>Smoker:</label>
+        <select name="smoker" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Number of Dependents:</label>
+        <input type="number" name="dependents" required>
+
+        <label>Type of Claim:</label>
+        <select name="claim_type" required>
+            <option value="Health">Health</option>
+            <option value="Accident">Accident</option>
+            <option value="Fire">Fire</option>
+            <option value="Theft">Theft</option>
+        </select>
+
+        <label>Claim Amount:</label>
+        <input type="number" name="claim_amount" required>
+
+        <label>Number of Previous Claims:</label>
+        <input type="number" name="previous_claims" required>
+
+        <label>Hospital Stay Duration (days):</label>
+        <input type="number" name="hospital_stay" required>
+
+        <label>Doctor Visits:</label>
+        <input type="number" name="doctor_visits" required>
+
+        <input type="submit" value="Predict Claim Status">
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <h3>{{ prediction }}</h3>
+    </div>
+    {% endif %}
+
+</body>
+</html>
