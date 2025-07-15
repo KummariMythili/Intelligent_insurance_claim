@@ -1,111 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Insurance Claim Prediction</title>
-    <style>
-        body {
-            background-color: #f8f8f8;
-            font-family: Arial, sans-serif;
-        }
-        form {
-            background-color: white;
-            padding: 25px;
-            border-radius: 12px;
-            width: 500px;
-            margin: auto;
-            margin-top: 40px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-        input[type=submit] {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        h2 {
-            text-align: center;
-        }
-        .result {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 18px;
-            color: #222;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Intelligent Insurance Claim Approval Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 </head>
 <body>
 
-    <form action="/predict" method="post">
-        <h2>Intelligent Insurance Claim Prediction</h2>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="/">🧠 Intelligent Claim Predictor</a>
+  </div>
+</nav>
 
-        <label>Age:</label>
-        <input type="number" name="age" required>
+<header class="bg-light py-5 text-center">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Insurance Claim Approval Prediction</h1>
+    <p class="lead">AI-driven system to predict approval or rejection of health insurance claims.</p>
+    <img src="{{ url_for('static', filename='intelligent.jpg') }}" alt="Insurance" class="img-fluid rounded mt-3" style="max-height: 300px;">
+  </div>
+</header>
 
-        <label>Gender:</label>
-        <select name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">📝 Enter Claim Details</h2>
+    <form method="POST" action="/predict" class="row g-3">
 
-        <label>BMI:</label>
-        <input type="number" name="bmi" step="0.1" required>
+      <div class="col-md-6">
+        <label class="form-label">👤 Age</label>
+        <input type="number" name="Age" class="form-control" required>
+      </div>
 
-        <label>Smoker:</label>
-        <select name="smoker" required>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
+      <div class="col-md-6">
+        <label class="form-label">⚧️ Gender (Male=1, Female=0)</label>
+        <input type="number" min="0" max="1" name="Gender" class="form-control" required>
+      </div>
 
-        <label>Number of Dependents:</label>
-        <input type="number" name="dependents" required>
+      <div class="col-md-6">
+        <label class="form-label">📏 BMI</label>
+        <input type="number" step="0.01" name="BMI" class="form-control" required>
+      </div>
 
-        <label>Type of Claim:</label>
-        <select name="claim_type" required>
-            <option value="Health">Health</option>
-            <option value="Accident">Accident</option>
-            <option value="Fire">Fire</option>
-            <option value="Theft">Theft</option>
-        </select>
+      <div class="col-md-6">
+        <label class="form-label">🚬 Smoker (Yes=1, No=0)</label>
+        <input type="number" min="0" max="1" name="Smoker" class="form-control" required>
+      </div>
 
-        <label>Claim Amount:</label>
-        <input type="number" name="claim_amount" required>
+      <div class="col-md-6">
+        <label class="form-label">👨‍👩‍👧 Number of Dependents</label>
+        <input type="number" name="Number_of_Dependents" class="form-control" required>
+      </div>
 
-        <label>Number of Previous Claims:</label>
-        <input type="number" name="previous_claims" required>
+      <div class="col-md-6">
+        <label class="form-label">📂 Type of Claim (Encoded)</label>
+        <input type="number" name="Type_of_Claim" class="form-control" required>
+      </div>
 
-        <label>Hospital Stay Duration (days):</label>
-        <input type="number" name="hospital_stay" required>
+      <div class="col-md-6">
+        <label class="form-label">💰 Claim Amount</label>
+        <input type="number" step="0.01" name="Claim_Amount" class="form-control" required>
+      </div>
 
-        <label>Doctor Visits:</label>
-        <input type="number" name="doctor_visits" required>
+      <div class="col-md-6">
+        <label class="form-label">📁 Number of Previous Claims</label>
+        <input type="number" name="Number_of_Previous_Claims" class="form-control" required>
+      </div>
 
-        <input type="submit" value="Predict Claim Status">
+      <div class="col-md-6">
+        <label class="form-label">🏥 Hospital Stay Duration (Days)</label>
+        <input type="number" name="Hospital_Stay_Duration" class="form-control" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">👨‍⚕️ Doctor Visits</label>
+        <input type="number" name="Doctor_Visits" class="form-control" required>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100">🔍 Predict Claim Status</button>
+      </div>
     </form>
 
-    {% if prediction %}
-    <div class="result">
-        <h3>{{ prediction }}</h3>
+    {% if prediction_text %}
+    <div class="alert alert-info mt-5 text-center">
+      <h4>📌 Prediction Result: <strong>{{ prediction_text }}</strong></h4>
     </div>
     {% endif %}
 
-    {% if user_input %}
-    <div class="result">
-        <h4>🧾 Your Inputs:</h4>
-        <ul style="list-style-type: none; padding: 0;">
-            {% for key, value in user_input.items() %}
-            <li><strong>{{ key }}:</strong> {{ value }}</li>
-            {% endfor %}
-        </ul>
+    {% if request.method == 'POST' %}
+    <div class="mt-4 p-3 bg-light border rounded">
+      <h5>📥 Input Summary:</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Age:</strong> {{ request.form.Age }}</li>
+        <li class="list-group-item"><strong>Gender:</strong> {{ request.form.Gender }}</li>
+        <li class="list-group-item"><strong>BMI:</strong> {{ request.form.BMI }}</li>
+        <li class="list-group-item"><strong>Smoker:</strong> {{ request.form.Smoker }}</li>
+        <li class="list-group-item"><strong>Dependents:</strong> {{ request.form.Number_of_Dependents }}</li>
+        <li class="list-group-item"><strong>Type of Claim:</strong> {{ request.form.Type_of_Claim }}</li>
+        <li class="list-group-item"><strong>Claim Amount:</strong> {{ request.form.Claim_Amount }}</li>
+        <li class="list-group-item"><strong>Previous Claims:</strong> {{ request.form.Number_of_Previous_Claims }}</li>
+        <li class="list-group-item"><strong>Stay Duration:</strong> {{ request.form.Hospital_Stay_Duration }}</li>
+        <li class="list-group-item"><strong>Doctor Visits:</strong> {{ request.form.Doctor_Visits }}</li>
+      </ul>
     </div>
     {% endif %}
+  </div>
+</section>
 
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">📘 About This Project</h2>
+    <p class="text-center">This machine learning system intelligently predicts whether a health insurance claim is likely to be approved or rejected based on applicant and claim details.</p>
+    <div class="row mt-4">
+      <div class="col-md-4 text-center">
+        <h5>📊 Input Features</h5>
+        <p>Data-driven evaluation using age, BMI, claim type, doctor visits, etc.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <h5>🧠 ML Algorithms</h5>
+        <p>Powered by models like Logistic Regression, SVM, and Gradient Boosting.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <h5>🎯 Decision Output</h5>
+        <p>Predicts whether a submitted claim is likely to be approved or rejected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <h2 class="text-center mb-4">📖 Understanding the Fields</h2>
+    <ul class="list-group list-group-flush fs-5">
+      <li class="list-group-item"><strong>Age:</strong> Policyholder's age.</li>
+      <li class="list-group-item"><strong>Gender:</strong> 1 = Male, 0 = Female.</li>
+      <li class="list-group-item"><strong>BMI:</strong> Body Mass Index of the applicant.</li>
+      <li class="list-group-item"><strong>Smoker:</strong> 1 = Yes, 0 = No.</li>
+      <li class="list-group-item"><strong>Number of Dependents:</strong> Family members dependent on the policy.</li>
+      <li class="list-group-item"><strong>Type of Claim:</strong> Encoded category of the claim.</li>
+      <li class="list-group-item"><strong>Claim Amount:</strong> Monetary amount requested for approval.</li>
+      <li class="list-group-item"><strong>Previous Claims:</strong> Number of claims filed previously.</li>
+      <li class="list-group-item"><strong>Stay Duration:</strong> Days spent hospitalized.</li>
+      <li class="list-group-item"><strong>Doctor Visits:</strong> Total consultations made for this claim.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="bg-primary text-white text-center py-3">
+  &copy; 2025 Intelligent Claim Prediction | AI-Powered Insurance Decisions
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 </body>
 </html>
